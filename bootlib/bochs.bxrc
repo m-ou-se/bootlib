@@ -1,0 +1,20 @@
+display_library: sdl
+megs: 32
+boot: floppy
+floppy_bootsig_check: disabled=0
+floppya: 1_44="floppy.img", status=inserted
+clock: sync=realtime, time0=local
+log: -
+logprefix: %t%e%d
+panic: action=ask
+error: action=ask
+info: action=report
+debug: action=ignore
+pass: action=fatal
+keyboard_type: mf
+keyboard_serial_delay: 250
+keyboard_paste_delay: 100000
+keyboard_mapping: enabled=0, map=
+user_shortcut: keys=none
+mouse: enabled=0, type=ps2
+port_e9_hack: enabled=1

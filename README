@@ -1,0 +1,81 @@
+Hai,
+
+The directory you just opened contains our 'bootlib' and a minimal
+example that uses it. 'bootlib' is a tiny library written in x86
+assembly which should provide you just enough functionality to let
+you make your own bootable program without too much trouble.
+
+If you're using some form of Linux (x86 or x86_64), you should
+be able to use the example makefile:
+This makefile lets you use 'make' to compile your bootable image,
+'make floppy.img' to make a bootable floppy image, and 'make test'
+to run that in the Bochs emulator (if installed).
+
+This file contains some hints on how to use things such as VGA
+output and keyboard input. You'll probably need a lot more
+information than what's given here, but this should give you a
+good start.
+
+Have fun!
+
+Maarten de Vries and Mara Bos
+
+
+[Booting your image]
+
+The file that comes out of the compiler should be a Multiboot ELF
+image, which can be loaded by a bootloader such as GRUB.
+
+floppy_template.img contains the GRUB bootloader which will try to
+load the Multiboot ELF image placed right afterwards. So if you
+concatenate your image to this template, you should have a bootable
+floppy image. This floppy image can then be used to run your program
+in a emulator, such as Bochs. (This all happens when you run 'make
+test'.)
+
+If you want to run your program natively on your computer from your
+harddrive, you should configure your bootloader to add an option
+for your boot image. For example, if you're using Ubuntu with GRUB2:
+Put the image in a convenient place (such as /boot/) and add the
+following to /etc/grub.d/40_custom: (and run: sudo update-grub2)
+
+submenu "Custom boot images" {
+	menuentry "My Awesome Program" {
+		multiboot /boot/myawesomeprogram
+	}
+}
+
+It is also fun to try to get your program running without a
+bootloader. Reading your a file from a harddrive with a file system
+can get pretty tough in assembly, but reading your image from a
+fixed position on a floppy should be pretty easy.
+
+
+[VGA output]
+
+Code is included that will set all VGA registers to get the graphics
+card into 16 color 25*80 text mode. If you want a different mode,
+you'll have to find out the values for all those registers yourself.
+
+In text mode, each block on the screen (of 8 by 16 pixels) will match
+two bytes in the the VGA memory (which starts at 0xB8000, also
+available as the symbol 'vga_memory'): one for the character itself
+(in ASCII), and one for the colour (four bits background, four bits
+foreground).
+
+It is possible to overwrite the default font, so you can display other
+kind of (8*16 pixel tiled) graphics. Code for this is not included.
+
+
+[Keyboard input]
+
+Any input from the keyboard fires IRQ1 (if enabled). After the IRQ
+fired, the keyboard controller might not be ready to give you the
+scancode yet. You'll have to wait for the 'ready bit' to turn on:
+  Read a byte from 0x64 (inb $0x64, %al), and repeat
+  until the least signifigant bit is one.
+Then, you can read the scancode (byte) from 0x60 (inb $0x60, %al).
+
+For a overview of scancodes, see
+  http://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
+
