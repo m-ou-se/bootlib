@@ -79,3 +79,7 @@ Then, you can read the scancode (byte) from 0x60 (inb $0x60, %al).
 For a overview of scancodes, see
   http://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
 
+
+[License]
+
+See the 'LICENSE' file.
