@@ -1,6 +1,6 @@
 
 boot.elf: $(wildcard bootlib/*.s *.s)
-	gcc -g -nostdlib -m32 -Wl,-Tbootlib/boot.ld -o $@ $^
+	$(CC) -g -nostdlib -m32 -Wl,-Tbootlib/boot.ld -o $@ $^
 
 boot.img: boot.elf
 	objcopy -S $< $@
