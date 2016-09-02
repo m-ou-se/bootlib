@@ -8,8 +8,7 @@ you make your own bootable program without too much trouble.
 If you're using some form of Linux (x86 or x86_64), you should
 be able to use the example makefile:
 This makefile lets you use 'make' to compile your bootable image,
-'make floppy.img' to make a bootable floppy image, and 'make test'
-to run that in the Bochs emulator (if installed).
+and 'make test' to run it in the Qemu emulator (if installed).
 
 This file contains some hints on how to use things such as VGA
 output and keyboard input. You'll probably need a lot more
@@ -25,13 +24,6 @@ Maarten de Vries and Mara Bos
 
 The file that comes out of the compiler should be a Multiboot ELF
 image, which can be loaded by a bootloader such as GRUB.
-
-floppy_template.img contains the GRUB bootloader which will try to
-load the Multiboot ELF image placed right afterwards. So if you
-concatenate your image to this template, you should have a bootable
-floppy image. This floppy image can then be used to run your program
-in a emulator, such as Bochs. (This all happens when you run 'make
-test'.)
 
 If you want to run your program natively on your computer from your
 harddrive, you should configure your bootloader to add an option

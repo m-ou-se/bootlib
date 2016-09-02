@@ -2,17 +2,11 @@
 boot.elf: $(wildcard bootlib/*.s *.s)
 	$(CC) -g -nostdlib -m32 -Wl,-Tbootlib/boot.ld -o $@ $^
 
-boot.img: boot.elf
-	objcopy -S $< $@
-
-floppy.img: bootlib/floppy_template.img boot.img
-	cat $^ > $@
-
 .PHONY: test
-test: floppy.img
-	bochs -f bootlib/bochs.bxrc
+test: boot.elf
+	qemu-system-x86_64 -kernel $<
 
 .PHONY: clean
 clean:
-	rm -f boot.elf boot.img floppy.img
+	rm -f boot.elf
 
