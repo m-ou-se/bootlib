@@ -7,6 +7,7 @@
 
 .text
 
+.align 4
 	multiboot_header: # this header contains some magic values to let the bootloader (grub/lilo/whatever) find our entrypoint
 		.long 0x1BADB002
 		.long 0x00000000
